@@ -1,0 +1,20 @@
+<!-- app/views/calculator/add.html.erb -->
+
+<h1>String Calculator</h1>
+
+<%= form_with url: string_calculators_add_path, method: :get, local: true do |form| %>
+  <div>
+    <%= form.label :numbers, "Enter numbers (comma or newline separated)" %><br>
+    <%= form.text_area :numbers, rows: 4, cols: 40 %>
+  </div>
+  
+  <div>
+    <%= form.submit "Calculate" %>
+  </div>
+<% end %>
+
+<% if @result %>
+  <h2>Result: <%= @result %></h2>
+<% elsif @error %>
+  <h2 style="color: red;">Error: <%= @error %></h2>
+<% end %>
