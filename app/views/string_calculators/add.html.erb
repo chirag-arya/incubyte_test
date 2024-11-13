@@ -1,5 +1,3 @@
-<!-- app/views/calculator/add.html.erb -->
-
 <h1>String Calculator</h1>
 
 <%= form_with url: string_calculators_add_path, method: :get, local: true do |form| %>
@@ -12,7 +10,6 @@
     <%= form.submit "Calculate" %>
   </div>
 <% end %>
-
 <% if @result %>
   <h2>Result: <%= @result %></h2>
 <% elsif @error %>
