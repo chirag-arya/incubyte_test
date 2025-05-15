@@ -1,21 +1,18 @@
 class StringCalculator
   def self.add(numbers)
-    return 0 if numbers.empty?
+    return 0 if numbers.blank?
 
     # Check if there's a custom delimiter
     if numbers.start_with?("//")
-      delimiter, numbers = parse_custom_delimiter(numbers)
-      numbers_array = numbers.split(delimiter)
+      delimiter, rest_of_numbers = numbers.split("\n", 2)
+      delimiter = delimiter[2..-1]  # Remove the leading "//" part
     else
-      # Default delimiters are comma or newline
-      numbers_array = numbers.split(/[\n,]+/)
+      delimiter = /[,\n]/
+      rest_of_numbers = numbers
     end
 
-    # Convert to integers
-    numbers_array.map!(&:to_i)
-
-    # Sum the numbers
-    result = numbers_array.sum
+    # Split the numbers using the delimiter (which could be a pipe `|`)
+    numbers_array = rest_of_numbers.split(delimiter).map(&:to_i)
 
     # negative numbers
     negatives = numbers_array.select { |num| num < 0 }
@@ -23,16 +20,9 @@ class StringCalculator
       raise "Negative numbers not allowed: #{negatives.join(', ')}"
     end
 
+    # Sum the numbers
+    result = numbers_array.sum
+
     result
-  end
-
-  private
-
-  # Parse custom delimiter (e.g., //;\n1;2;3)
-  def self.parse_custom_delimiter(numbers)
-    delimiter_line, numbers = numbers.split("\n", 2)  # Split the first line (delimiter definition)
-    delimiter = delimiter_line[2..-1]  # Remove the leading "//"
-    delimiter = Regexp.escape(delimiter)  # Escape the delimiter to use in the regular expression
-    [delimiter, numbers]
   end
 end
